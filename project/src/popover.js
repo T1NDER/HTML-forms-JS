@@ -40,7 +40,7 @@ class Popover {
     if (this.isVisible) return;
 
     this.popover = this.createPopover();
-    document.body.appendChild(this.popover);
+    document.body.append(this.popover);
     this.positionPopover();
     this.isVisible = true;
 
@@ -55,7 +55,7 @@ class Popover {
     this.popover.classList.remove("show");
     setTimeout(() => {
       if (this.popover && this.popover.parentNode) {
-        this.popover.parentNode.removeChild(this.popover);
+        this.popover.remove();
       }
       this.popover = null;
       this.isVisible = false;

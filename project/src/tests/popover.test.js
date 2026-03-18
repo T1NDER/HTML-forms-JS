@@ -1,35 +1,22 @@
-const { JSDOM } = require('jsdom');
+const Popover = require('../popover.js').default;
 
 describe('Popover', () => {
-  let dom;
-  let document;
-  let window;
-  let Popover;
+  let button;
+  let popover;
 
-  beforeEach(async () => {
-    // Setup JSDOM
-    dom = new JSDOM('<!DOCTYPE html><html><body><button id="popoverButton">Click me</button></body></html>', {
-      url: 'http://localhost',
-      pretendToBeVisual: true
-    });
-
-    document = dom.window.document;
-    window = dom.window;
-
-    // Mock requestAnimationFrame
-    window.requestAnimationFrame = (cb) => setTimeout(cb, 0);
-
-    // Import Popover after setting up DOM
-    Popover = (await import('../popover.js')).default;
+  beforeEach(() => {
+    document.body.innerHTML = '<button id="popoverButton">Click me</button>';
+    button = document.getElementById('popoverButton');
   });
 
   afterEach(() => {
-    dom.window.close();
+    jest.clearAllTimers();
+    jest.useRealTimers();
+    document.body.innerHTML = '';
   });
 
   test('should create a popover instance', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button, {
+    popover = new Popover(button, {
       title: 'Test Title',
       content: 'Test Content'
     });
@@ -40,16 +27,14 @@ describe('Popover', () => {
   });
 
   test('should use default title and content if not provided', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button);
+    popover = new Popover(button);
 
     expect(popover.title).toBe('Popover title');
     expect(popover.content).toBe('Popover content');
   });
 
   test('should show popover on click', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button, {
+    popover = new Popover(button, {
       title: 'Test Title',
       content: 'Test Content'
     });
@@ -61,8 +46,9 @@ describe('Popover', () => {
   });
 
   test('should hide popover on second click', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button, {
+    jest.useFakeTimers();
+    
+    popover = new Popover(button, {
       title: 'Test Title',
       content: 'Test Content'
     });
@@ -71,12 +57,16 @@ describe('Popover', () => {
     expect(popover.isVisible).toBe(true);
 
     button.click();
+    
+    jest.advanceTimersByTime(200);
+    
     expect(popover.isVisible).toBe(false);
   });
 
   test('should hide popover when clicking outside', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button, {
+    jest.useFakeTimers();
+    
+    popover = new Popover(button, {
       title: 'Test Title',
       content: 'Test Content'
     });
@@ -86,14 +76,13 @@ describe('Popover', () => {
 
     document.body.click();
 
-    setTimeout(() => {
-      expect(popover.isVisible).toBe(false);
-    }, 200);
+    jest.advanceTimersByTime(200);
+
+    expect(popover.isVisible).toBe(false);
   });
 
   test('should position popover below the button', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button, {
+    popover = new Popover(button, {
       title: 'Test Title',
       content: 'Test Content'
     });
@@ -106,8 +95,7 @@ describe('Popover', () => {
   });
 
   test('should create popover with correct structure', () => {
-    const button = document.getElementById('popoverButton');
-    const popover = new Popover(button, {
+    popover = new Popover(button, {
       title: 'Test Title',
       content: 'Test Content'
     });
