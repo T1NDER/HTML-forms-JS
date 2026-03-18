@@ -21,10 +21,33 @@ Check out the live demo: [https://t1nder.github.io/HTML-forms-JS/](https://t1nde
 - Keyboard navigation (Escape to close)
 - Click outside to close
 - Built with Webpack
-- Automated tests with JSDOM/Puppeteer
+- Automated tests with Jest and JSDOM
 - CI/CD with GitHub Actions
 
 ## 📦 Installation
 
 ```bash
 npm install
+```
+
+## 🛠️ Development
+
+```bash
+npm run dev
+```
+
+## 🧪 Testing
+
+```bash
+npm test
+```
+
+## 📁 Build
+
+```bash
+npm run build
+```
+
+## 📄 License
+
+ISC
