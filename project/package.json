@@ -1,5 +1,6 @@
 {
   "name": "popover-project",
+  "homepage": "https://T1NDER.github.io/HTML-forms-JS",
   "version": "1.0.0",
   "description": "Bootstrap-like popover in vanilla JS",
   "main": "src/index.js",
